@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button id="btn">发生ajax请求</button>
+
+  <script>
+    // 1、获取按钮元素
+    let btn = document.querySelector('#btn')
+    // 2、设置点击事件
+    btn.onclick = function () { 
+      // 3、创建ajax实例化对象
+      let xhr = new XMLHttpRequest()
+      // 4、打开请求
+      xhr.open('get','http://123.249.17.37:8080/blogsManage/getList')
+      // 5、发送请求(send方法中发送的是请求体数据，只不过get是没有请求体的，而post才有请求体)
+      xhr.send()
+      // 6、客户端接收服务端中响应回来的结果数据
+      xhr.onreadystatechange = function(){
+        /*
+         * 2.已经完成了请求的发送
+         * 3.响应结果途中还没有完全响应结果完毕
+         * 4.已经完全响应完毕结果了
+         */
+
+        //7、判断
+        if(xhr.readyState === 4){
+          // status:状态码 200-299之间
+          if(xhr.status >= 200 && xhr.status < 300){
+            console.log(JSON.parse(xhr.responseText))
+          }
+        }
+      }
+    }
+  </script>
+</body>
+</html>
