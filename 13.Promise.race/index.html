@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    /*
+      Promise.race方法是需要传递一个参数，参数为数组，数组中的内容表示的是Promise实例化对象
+      如果有最先到达状态的，不管是成功还是失败，都将以这个对象的结果为准
+    */ 
+
+    let p1 = new Promise((resolve,reject)=>{
+      setTimeout(() => {
+        resolve('ok')
+      }, 1000);
+    })
+    let p2 = new Promise((resolve,reject)=>{
+      setTimeout(() => {
+        resolve('okk')
+      }, 2000);
+    })
+    let p3 = new Promise((resolve,reject)=>{
+      reject('err')
+    })
+
+    let result = Promise.race([p1,p2,p3])
+
+    result.then(res=>{
+      console.log('res',res)
+    }).catch(err=>{
+      console.log('err',err)
+    })
+
+  </script>
+</body>
+</html>

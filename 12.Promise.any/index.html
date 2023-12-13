@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+  /*
+    Promise下的any方法，只要参数中有一个Promise实例化对象的状态为fulfilled，则整体结果就会为fulfilled
+    如果所有的Promise实例都为rejected，那么结果就是rejected
+  */ 
+
+    let p1 = new Promise((resolve,reject)=>{
+      setTimeout(() => {
+        resolve('ok')
+      }, 1000);
+    })
+    let p2 = new Promise((resolve,reject)=>{
+      setTimeout(() => {
+        resolve('okk')
+      }, 2000);
+    })
+    let p3 = new Promise((resolve,reject)=>{
+      reject('err')
+    })
+
+    let result = Promise.any([p3,p2,p1])
+   
+    result.then(res=>{
+      console.log('res',res)
+    })  
+
+
+    
+
+  </script>
+</body>
+
+</html>

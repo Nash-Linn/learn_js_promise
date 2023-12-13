@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    /*
+      then方法中是可以传入两个参数，当然也可以不传，也可以只传成功的回调函数
+      也可以单独的来使用catch来专门指定失败的回调函数
+
+      catch方法也有返回值，和then方法的返回值类似
+      catch方法也返回一个Promise实例化对象
+
+      情况1：如果失败回调中没有返回值，则得到一个成功的promise实例化对象，结果为undefined
+      情况2：如果失败回调中有返回值，但这个返回值不是promise实例化对象
+             则的得到一个成功的Promise实例化对象，结果为返回值数据
+      情况3：如果失败回调中有返回值，但这个返回值是promise实例化对象
+             则新的Promise对象的状态和结果值完全取决于返回的Promise对象的状态以及结果值 
+
+    */
+
+    let p1 = new Promise((resolve,reject)=>{
+      reject('err')
+    })
+
+    let result = p1.catch(err=>{
+      // console.log('err',err)
+      return 111
+    })
+
+    console.log('result',result)
+
+    
+    /*
+      当然也可以和then方法结合使用
+      异常（错误）穿透
+      当如果有多个需要执行的成功的回调，可以不每一次都写失败回调，
+      可以一次性统一使用最后一次catch
+      当Promise实例化对象的状态为rejected，则会一直向下穿透到catch方法
+    */
+
+
+    let p2 = new Promise((resolve,reject)=>{
+      reject('errrrr')
+    })
+
+    p2.then(res=>{
+      console.log('res',res)
+    }).then(res=>{
+      console.log('res',res)
+    }).catch(err=>{
+      console.log('err',err)
+    })
+
+
+
+  </script>
+</body>
+</html>

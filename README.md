@@ -240,4 +240,182 @@ ReadFileFun("../05.Promise的链式调用-读取文件/1.txt").then(
 
 
 
-# Promise.all()
+# Promise.all
+
+ Promise 下的 all 方法作用主要是针对多个 Promise的异步任务的处理
+
+ 需要接受一个数组类型的参数
+
+ 返回值：Promise 对象，状态也是由数组中的每一个 Promise 对象的状态来决定的
+
+​				当所有的 Promise 对象的状态都是成功的，最终的结果就是成功的，结果值是由每一个 Promise 的结果值组成的数组
+
+​				当所有的 Promise 对象的状态但凡有一个是失败的，最终也是失败的 Promise，结果值就是失败的这个 Promise 的结果值
+
+
+
+```js
+let p1 = new Promise((resolve, reject) => {
+  resolve("ok");
+});
+
+let p2 = new Promise((resolve, reject) => {
+  resolve("ok");
+});
+
+let p3 = new Promise((resolve, reject) => {
+  reject("error");
+});
+
+let p4 = new Promise((resolve, reject) => {
+  resolve("ok");
+});
+
+Promise.all([p1, p2, p3, p4]).then(
+  (results) => {
+    console.log(results);
+  },
+  (error) => {
+    console.log(error);
+  }
+);
+```
+
+
+
+## 案例-模拟接口请求数据
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>案例1-模拟接口请求数据</title>
+</head>
+<body>
+    <script>
+      //模拟请求用户列表的数据
+      function getUserList(){
+        return new Promise(function(resolve,reject){
+          //定时器模拟异步
+          setTimeout(function(){
+            resolve('请求用户列表的数据...') 
+          },1000)
+        })
+      }
+
+      //模拟请求轮播图的数据
+      function getBanner(){
+        return new Promise(function(resolve,reject){
+          //定时器模拟异步
+          setTimeout(function(){
+            resolve('请求轮播图的数据...') 
+          },2000) 
+        })
+      }
+      
+      //模拟请求视频列表的数据
+      function getVideoList(){
+        return new Promise(function(resolve,reject){
+          //定时器模拟异步
+          setTimeout(function(){
+            resolve('请求视频列表的数据...') 
+          },3000) 
+        })
+      }
+    
+      // 模拟程序启动加载
+      function initLoad() { 
+        Promise.all([getUserList(),getBanner(),getVideoList()]).then(function(res){
+          console.log(res)
+        })
+      }
+      initLoad()
+    </script>
+</body>
+</html>
+```
+
+## 案例-读取文件
+
+```js
+// 1.导入模块
+const fs = require("fs");
+const util = require("util");
+
+// 2.调用方法
+const myreadFile = util.promisify(fs.readFile);
+
+// 3.读取文件
+let one = myreadFile("./1.txt");
+let two = myreadFile("./2.txt");
+let three = myreadFile("./3.txt");
+
+// 4.处理结果
+let result = Promise.all([one, two, three]);
+result.then(
+  (res) => {
+    console.log(String(res));
+  },
+  (rea) => {
+    console.log("rea", rea);
+  }
+);
+```
+
+# Promise.allSettled
+
+```html
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //封装 AJAX 函数 
+      function ajax(url) {
+        return new Promise(function (resolve, reject) {
+          let xhr = new XMLHttpRequest();
+          xhr.open('GET', url, true);
+          xhr.send()
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+              if (xhr.status >= 200 && xhr.status<300) {
+                resolve(xhr.responseText)
+              } else { 
+                reject(xhr.responseText)
+              }
+            }
+          }
+        })
+      }
+
+
+
+      /**
+       * allSettled 方法用来确定一组异步的操作是否都结束了（不管是成功还是失败）
+       * 其中包含了 fulfilled 和 rejected两种情况
+       */
+
+
+    Promise.allSettled([
+      ajax('http://iwenwiki.com/api/blueberrypai/getChengpinInfo.php'),
+      ajax('http://iwenwiki.com/api/blueberrypai/getListeningInfo.php')
+    ]).then(val=>{
+      //过滤成功和失败两种情况
+      let successList = val.filter (item=>item.status == 'fulfilled')
+      let failList = val.filter (item=>item.status == 'rejected')
+      console.log(successList)
+      console.log(failList)
+    }).catch(err=>{
+      console.log(err)
+    })
+    </script>
+  </body>
+  </html>
+```
+

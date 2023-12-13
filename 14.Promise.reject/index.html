@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    /*
+      Promise.reject 方法将始终返回一个为失败的Promise对象，
+      无论参数是否为Promise或者其他，最终都将返回失败的Promise
+    */
+    const p1 = Promise.reject(123)
+    p1.then(res=>{
+      console.log('res',res)
+    }).catch(err=>{
+      console.log('err',err)
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    /*
+      改变Promise状态和指定回调函数执行，到底是谁先谁后？
+      都有可能
+      若执行器函数中为同步任务，则先修改状态，再指定回调函数。
+      若执行器函数中为异步任务，则先指定回调函数，再修改状态。（更为常见，Promise主要是为了执行异步任务）
+    */
+   let p1 = new Promise((resolve,reject)=>{
+       //同步任务
+      //  resolve('ok')
+
+       //异步任务
+       setTimeout(() => {
+        resolve('okk')
+       },1000);
+   })
+
+   p1.then(value=>{
+    console.log(value)
+   },reason=>{
+    console.log(reason)
+   })
+   
+   
+  </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    /*
+      任何函数都可以被声明成一个async函数
+      因为要实现的就是异步功能（定时器、ajax请求...）
+      可能是要将实现的功能封装成一个函数，为了更好表示函数中是异步，所以在函数前面添加一个async
+    */
+
+    async function main(){
+      //函数的内部可以添加任意的语句来执行，但是其真正的目的主要是为了得到一个Promise对象的状态以及结果值
+
+      //情况1：返回非Promise对象的数据
+      // return 100
+
+      //情况2：返回的是Promise对象
+      return new Promise((resolve,reject)=>{
+        resolve('ok')
+      })
+
+      //情况3：抛出异常
+      throw new Error('出错了')
+    }
+
+    let result = main()
+
+    console.log('result',result)
+
+
+  </script>
+</body>
+</html>

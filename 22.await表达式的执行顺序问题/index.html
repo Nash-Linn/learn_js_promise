@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    /*
+      结论：如果有同步代码和异步代码同时出现，一定是先执行同步，再执行异步
+    
+    */  
+    async function main(){
+      console.log(111)
+      let result = await Promise.resolve('ok')
+      console.log(222)
+      let result1 = await Promise.resolve('okk')
+      console.log('result1',result1)
+    }
+    main()
+    console.log(333)
+  </script>
+</body>
+</html>
